@@ -198,6 +198,12 @@
         $("#sidebar-wrapper").toggleClass("active");
     });
 
+    // set new random hex value
+    $("#btnGenerateNewRandHex").click(function(e) {
+      e.preventDefault();
+      $("#rand-hex").text(newRandHexString);
+    })
+
     // Scrolls to the selected menu item on the page
     $(function() {
         $('a[href*=#]:not([href=#])').click(function() {
@@ -214,6 +220,15 @@
             }
         });
     });
+
+    $(document).ready(function(){
+      $("#rand-hex").text(newRandHexString);
+    });
+
+    var newRandHexString = function() {
+        return "0x"+(Math.floor(Math.random() * (10000000001))).toString(16);
+    }
+
     </script>
 
 </body>
