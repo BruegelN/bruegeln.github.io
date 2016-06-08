@@ -1,7 +1,7 @@
 
--* http://crashing.systems
--* http://www.crashing.systems
--* https://bruegeln.github.io
+* http://crashing.systems
+* http://www.crashing.systems
+* https://bruegeln.github.io
 
 
 # [Start Bootstrap](http://startbootstrap.com/) - [Stylish Portfolio](http://startbootstrap.com/template-overviews/stylish-portfolio/)
