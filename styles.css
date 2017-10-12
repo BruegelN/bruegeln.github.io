@@ -1,19 +1,44 @@
-html,body {
-  background-color: blue;/*#2067B2;*/
+html,body
+{
+  background-color: #2067B2;/*#2067B2;*/
   font-size: 100%;
 }
 
-#wrapper{
+#wrapper
+{
   height:     auto;
   min-height: 100%;
-  margin-left: 20%;
+  margin-left: 15%;
   width: auto;
 }
 
-p {
+p, a
+{
   width: auto;
   font-size: 1.5em;
   font-family: fixedsys, LucidaTerminal, monospace;
   text-align: left;
   color: white;
+}
+
+p.thick
+{
+  font-weight: bold;
+  font-size: 1.8em;
+}
+
+p.no-linebrake
+{
+  display:inline;
+}
+
+#general-about-me
+{
+  margin-top: 30%;
+}
+
+p.footer
+{
+  margin-top: 20%;
+  font-size: 1.3em;
 }
