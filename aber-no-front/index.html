@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Hello OpenCV.js</title>
+</head>
+<body>
+<h2>Hello OpenCV.js</h2>
+<p id="status">OpenCV.js is loading...</p>
+<div>
+  <div class="inputoutput">
+    <img id="imageSrc" alt="No Image" />
+    <div class="caption">imageSrc <input type="file" id="fileInput" name="file" /></div>
+  </div>
+  <div class="inputoutput">
+    <canvas id="canvasOutput" ></canvas>
+    <div class="caption">canvasOutput</div>
+  </div>
+</div>
+<script type="text/javascript">
+let imgElement = document.getElementById('imageSrc');
+let inputElement = document.getElementById('fileInput');
+inputElement.addEventListener('change', (e) => {
+  imgElement.src = URL.createObjectURL(e.target.files[0]);
+}, false);
+imgElement.onload = function() {
+  let src = cv.imread(imgElement);
+
+  let dst = new cv.Mat();
+
+  // these point pixel coordinates of the 4 corners, given by pure magic
+  let pt_A = [2036, 1356]
+  let pt_B = [2037, 1805]
+  let pt_C = [2803, 1733]
+  let pt_D = [2802, 1317]
+  
+  // do some other magic to guesstimate the 4 corners in target plane
+  let width_AD = Math.sqrt(((pt_A[0] - pt_D[0]) ** 2) + ((pt_A[1] - pt_D[1]) ** 2))
+  let width_BC = Math.sqrt(((pt_B[0] - pt_C[0]) ** 2) + ((pt_B[1] - pt_C[1]) ** 2))
+  let maxWidth = Math.max(Math.round(width_AD), Math.round(width_BC))
+
+  let height_AB = Math.sqrt(((pt_A[0] - pt_B[0]) ** 2) + ((pt_A[1] - pt_B[1]) ** 2))
+  let height_CD = Math.sqrt(((pt_C[0] - pt_D[0]) ** 2) + ((pt_C[1] - pt_D[1]) ** 2))
+  let maxHeight = Math.max(Math.round(height_AB), Math.round(height_CD))
+
+  // size of the output image
+  let dsize = new cv.Size(maxWidth * 2, maxHeight * 2);
+
+  //console.log(maxWidth)
+  //console.log(maxWidth)
+  let srcTri = cv.matFromArray(4, 1, cv.CV_32FC2, [pt_A[0], pt_A[1],pt_B[0], pt_B[1],pt_C[0], pt_C[1],pt_D[0], pt_D[1]]);
+  //console.log(srcTri.data32F)
+  // make a square
+  let data32F = [0, 0, 0, maxHeight - 1, maxWidth - 1, maxHeight - 1, maxWidth - 1, 0]
+  // move is somewhat more to the "center" of the destination image
+  for (var i = 0; i < data32F.length - 1; i += 2) {
+
+    // console.log(data32F[i]);
+    data32F[i] = data32F[i] + maxHeight*0.3;
+    data32F[i + 1] = data32F[i + 1] + maxWidth*0.3;
+}
+
+  let dstTri = cv.matFromArray(4, 1, cv.CV_32FC2, data32F);
+
+  // console.log(dsize.width)
+  // console.log(dsize.height)
+
+  // console.log(dstTri.data32F)
+
+  let M = cv.getPerspectiveTransform(srcTri, dstTri);
+  // console.log(M.data32F)
+
+
+  cv.warpPerspective(src, dst, M, dsize, cv.INTER_LINEAR);
+  cv.imshow('canvasOutput', dst);
+
+  src.delete();
+  dst.delete();
+  M.delete();
+  srcTri.delete();
+  dstTri.delete();
+
+};
+var Module = {
+  // https://emscripten.org/docs/api_reference/module.html#Module.onRuntimeInitialized
+  onRuntimeInitialized() {
+    document.getElementById('status').innerHTML = 'OpenCV.js is ready.';
+  }
+};
+</script>
+<!-- load version <= 4.4.0 because afterwards OpenCV no longer uses BSD 3-clause license! -->
+<script async src="https://docs.opencv.org/3.4.0/opencv.js" type="text/javascript"></script>
+</body>
+</html>
