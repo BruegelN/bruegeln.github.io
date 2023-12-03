@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "JetBrainsMono";
+  src:url("JetBrainsMono-2.304/fonts/ttf/JetBrainsMono-Regular.ttf");
+}
+
+
 html,body
 {
   background-color: #2067B2;/*#2067B2;*/
@@ -9,6 +15,7 @@ html,body
   height:     auto;
   min-height: 100%;
   margin-left: 15%;
+  margin-right: 15%;
   width: auto;
 }
 
@@ -16,9 +23,9 @@ p, a
 {
   width: auto;
   font-size: 1.5em;
-  font-family: fixedsys, LucidaTerminal, monospace;
+  font-family: JetBrainsMono;
   text-align: left;
-  color: white;
+  color: #f5f5f5f5;
 }
 
 p.thick
